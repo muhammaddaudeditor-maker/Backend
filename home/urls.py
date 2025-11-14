@@ -1,11 +1,11 @@
 # home/urls.py
 
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 from .views import HomeHeroViewSet, HomeStatViewSet, HomeIntroViewSet, HomeSkillViewSet, HomeServiceViewSet, HomeProcessViewSet, HomeToolViewSet, HomeFAQViewSet, HomeCTAViewSet
 from .views import UploadMediaView
 
-router = DefaultRouter()
+router = SimpleRouter()
 router.register(r'hero', HomeHeroViewSet, basename='home_hero')
 router.register(r'stats', HomeStatViewSet, basename='home_stat')
 router.register(r'intro', HomeIntroViewSet, basename='home_intro')

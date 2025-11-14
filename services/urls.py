@@ -1,7 +1,7 @@
 # services/urls.py
 
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 from .views import (
     ServiceViewSet, ProcessStepViewSet,
     EquipmentCategoryViewSet, TestimonialViewSet,
@@ -14,7 +14,7 @@ urlpatterns = [
     path('upload/', UploadMediaView.as_view(), name='upload-media'),
 ]
 
-router = DefaultRouter()
+router = SimpleRouter()
 router.register(r'services', ServiceViewSet, basename='service')
 router.register(r'process-steps', ProcessStepViewSet, basename='processstep')
 router.register(r'equipment', EquipmentCategoryViewSet, basename='equipment')

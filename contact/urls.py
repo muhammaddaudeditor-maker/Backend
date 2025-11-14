@@ -1,7 +1,7 @@
 # contact/urls.py
 
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 from .views import (
     ContactInfoViewSet,
     WhyChooseUsViewSet,
@@ -14,7 +14,7 @@ from .views import (
 )
 from .views import UploadMediaView
 
-router = DefaultRouter()
+router = SimpleRouter()   # <-- FIX
 router.register(r'contact-info', ContactInfoViewSet, basename='contactinfo')
 router.register(r'why-choose-us', WhyChooseUsViewSet, basename='whychooseus')
 router.register(r'hero-sections', HeroSectionViewSet, basename='herosection')

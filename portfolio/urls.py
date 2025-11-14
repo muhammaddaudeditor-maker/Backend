@@ -1,11 +1,11 @@
 # portfolio/urls.py
 
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 from .views import PortfolioCategoryViewSet, ProjectViewSet
 from .views import UploadMediaView
 
-router = DefaultRouter()
+router = SimpleRouter()
 router.register(r'categories', PortfolioCategoryViewSet, basename='portfolio_category')
 router.register(r'projects', ProjectViewSet, basename='project')
 

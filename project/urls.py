@@ -1,11 +1,11 @@
 # cinematography_backend/project/urls.py
 
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 from .views import PortfolioHeroViewSet, ProjectViewSet
 from .views import UploadMediaView
 
-router = DefaultRouter()
+router = SimpleRouter()
 router.register(r'portfolio-hero', PortfolioHeroViewSet, basename='portfolio-hero')
 router.register(r'projects', ProjectViewSet, basename='project')
 
