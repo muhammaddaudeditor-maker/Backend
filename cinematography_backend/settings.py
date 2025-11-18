@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'home',
     'project',
     'logo',
-    'cv_upload'
+    'cv_upload',
+    'testimonials',
 ]
 
 MIDDLEWARE = [
