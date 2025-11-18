@@ -37,12 +37,12 @@ class ProjectAdmin(admin.ModelAdmin):
         }),
     )
 
-    def video_preview(self, obj):
-        if obj.video:
-            return format_html(
-                '<video width="100" height="60" controls>'
-                '<source src="{}" type="video/mp4"></video>',
-                obj.video.url
-            )
-        return "No video"
-    video_preview.short_description = 'Video Preview'
+def video_preview(self, obj):
+    if obj.video and hasattr(obj.video, 'url') and obj.video.url:
+        return format_html(
+            '<video width="100" height="60" controls>'
+            '<source src="{}" type="video/mp4"></video>',
+            obj.video.url
+        )
+    return "No video"
+video_preview.short_description = 'Video Preview'
