@@ -13,7 +13,7 @@ _conf = importlib.import_module('django.conf')
 settings = _conf.settings
 
 static = importlib.import_module('django.conf.urls.static').static
-
+handler404 = 'django.views.defaults.page_not_found'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/portfolio/', include('portfolio.urls')),

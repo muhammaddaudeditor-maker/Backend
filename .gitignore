@@ -1,0 +1,79 @@
+# ------------------------------
+# Python & Django
+# ------------------------------
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django specific
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+
+# Settings local overrides
+settings_local.py
+local_settings.py
+.env
+*.env
+
+# Cache
+*.cache
+
+# ------------------------------
+# Virtual environments
+# ------------------------------
+venv/
+env/
+ENV/
+.venv/
+
+# ------------------------------
+# Static & Media files
+# ------------------------------
+
+# Django media uploads (videos, images, PDFs, etc.)
+media/
+*.mp4
+*.mov
+*.avi
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.webp
+*.pdf
+*.docx
+*.xlsx
+*.zip
+*.tar.gz
+
+# Thumbnails, generated files
+staticfiles/
+static_root/
+static/
+
+# ------------------------------
+# IDE / Editor leftovers
+# ------------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ------------------------------
+# OS-specific
+# ------------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------------
+# Database dumps
+# ------------------------------
+*.sqlite3
+*.db
+*.sql
+*.sql.gz
