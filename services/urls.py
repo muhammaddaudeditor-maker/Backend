@@ -18,7 +18,6 @@ router = SimpleRouter()
 router.register(r'services', ServiceViewSet, basename='service')
 router.register(r'process-steps', ProcessStepViewSet, basename='processstep')
 router.register(r'equipment', EquipmentCategoryViewSet, basename='equipment')
-router.register(r'testimonials', TestimonialViewSet, basename='testimonial')
 
 urlpatterns = [
     path('', include(router.urls)),
