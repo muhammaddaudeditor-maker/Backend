@@ -17,6 +17,7 @@ handler404 = 'django.views.defaults.page_not_found'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/portfolio/', include('portfolio.urls')),
+    path('api/', include('testimonials.urls')),
     path('api/', include('services.urls')),
     path('api/about/', include('about.urls')),
     path('api/contact/', include('contact.urls')),
@@ -30,7 +31,6 @@ urlpatterns = [
     path('contact/', include('contact.urls')),
     path('home/', include('home.urls')),
     path('project/', include('project.urls')),
-    path('testimonials/', include('testimonials.urls')),
 ]
 
 # Serve media files in development
