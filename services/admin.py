@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import (
     Service, ServiceFeature, ProcessStep, 
-    EquipmentCategory, EquipmentItem, Testimonial, SiteStats
+    EquipmentCategory, EquipmentItem, SiteStats
 )
 
 
@@ -90,26 +90,6 @@ class EquipmentItemAdmin(admin.ModelAdmin):
     list_filter = ['category']
     search_fields = ['item_name', 'category__name']
     list_editable = ['order']
-
-
-@admin.register(Testimonial)
-class TestimonialAdmin(admin.ModelAdmin):
-    list_display = ['name', 'role', 'rating', 'is_active', 'order', 'created_at']
-    list_filter = ['is_active', 'rating', 'created_at']
-    search_fields = ['name', 'role', 'text']
-    list_editable = ['is_active', 'order']
-    
-    fieldsets = (
-        ('Client Information', {
-            'fields': ('name', 'role')
-        }),
-        ('Testimonial Content', {
-            'fields': ('text', 'rating')
-        }),
-        ('Display Settings', {
-            'fields': ('is_active', 'order')
-        }),
-    )
 
 
 @admin.register(SiteStats)

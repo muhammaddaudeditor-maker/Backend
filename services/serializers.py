@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     Service, ServiceFeature, ProcessStep,
-    EquipmentCategory, EquipmentItem, Testimonial, SiteStats
+    EquipmentCategory, EquipmentItem, SiteStats
 )
 
 
@@ -57,15 +57,6 @@ class EquipmentCategorySerializer(serializers.ModelSerializer):
         model = EquipmentCategory
         fields = ['id', 'name', 'items', 'order']
 
-
-# ------------------- Testimonial -------------------
-class TestimonialSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Testimonial
-        fields = [
-            'id', 'name', 'role', 'text', 'rating',
-            'is_active', 'order', 'created_at',
-        ]
 
 
 # ------------------- Site Stats -------------------

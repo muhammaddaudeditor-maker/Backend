@@ -6,11 +6,11 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import (
     Service, ProcessStep, EquipmentCategory,
-    Testimonial, SiteStats
+     SiteStats
 )
 from .serializers import (
     ServiceSerializer, ProcessStepSerializer,
-    EquipmentCategorySerializer, TestimonialSerializer,
+    EquipmentCategorySerializer,
     SiteStatsSerializer
 )
 
@@ -55,13 +55,6 @@ class EquipmentCategoryViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = EquipmentCategorySerializer
     ordering = ['order']
 
-
-class TestimonialViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Testimonial.objects.filter(is_active=True)
-    serializer_class = TestimonialSerializer
-    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
-    filterset_fields = ['rating']
-    ordering = ['order', '-created_at']
 
 
 @api_view(['GET'])
