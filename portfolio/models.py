@@ -1,12 +1,14 @@
 from django.db import models
-from django.core.validators import FileExtensionValidator
-from cloudinary.models import CloudinaryField
 
 # ---------------- Media Uploads ----------------
 class MediaFile(models.Model):
     title = models.CharField(max_length=255)
-    file = CloudinaryField('file', blank=True, null=True)
+    file = models.FileField(upload_to='media_files/', blank=True, null=True)  # Local server storage
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Media File"
+        verbose_name_plural = "Media Files"
 
     def __str__(self):
         return self.title
@@ -16,11 +18,11 @@ class MediaFile(models.Model):
 class PortfolioCategory(models.Model):
     name = models.CharField(max_length=100, help_text='e.g., Wedding, Real Estate')
     icon = models.CharField(max_length=50, choices=[
-        ('Sparkles', 'Sparkles'),   # For All Projects
-        ('Heart', 'Heart'),         # For Weddings
-        ('Building2', 'Building2'), # For Real Estate
-        ('MessageCircle', 'MessageCircle'), # For Talking Head
-        ('Film', 'Film'),           # For Commercial
+        ('Sparkles', 'Sparkles'),
+        ('Heart', 'Heart'),
+        ('Building2', 'Building2'),
+        ('MessageCircle', 'MessageCircle'),
+        ('Film', 'Film'),
     ], default='Sparkles')
     count = models.IntegerField(default=0, help_text='Number of projects in this category')
     order = models.IntegerField(default=0, help_text='Display order (lower numbers appear first)')
@@ -39,14 +41,8 @@ class PortfolioCategory(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=100)
     category = models.ForeignKey(PortfolioCategory, on_delete=models.CASCADE, related_name='projects')
-    thumbnail = CloudinaryField('image', blank=True, null=True)
-    video = CloudinaryField(
-        'video', 
-        blank=True, 
-        null=True,
-        resource_type='video',
-        type='upload'
-    ) 
+    thumbnail = models.ImageField(upload_to='portfolio/thumbnails/', blank=True, null=True)
+    video = models.FileField(upload_to='portfolio/videos/', blank=True, null=True)
     description = models.TextField(help_text='Project description')
     views = models.CharField(max_length=10, default='0', help_text='e.g., 12.5K')
     likes = models.CharField(max_length=10, default='0', help_text='e.g., 2.1K')

@@ -1,5 +1,3 @@
-# portfolio/serializers.py
-
 from rest_framework import serializers
 from .models import PortfolioCategory, Project
 
@@ -19,16 +17,22 @@ class ProjectSerializer(serializers.ModelSerializer):
         ]
 
     def get_video_url(self, obj):
-        try:
-            return obj.video.url if obj.video else None
-        except:
-            return None
+        if obj.video:
+            try:
+                request = self.context.get('request')
+                return request.build_absolute_uri(obj.video.url) if request else obj.video.url
+            except:
+                return None
+        return None
 
     def get_thumbnail_url(self, obj):
-        try:
-            return obj.thumbnail.url if obj.thumbnail else None
-        except:
-            return None
+        if obj.thumbnail:
+            try:
+                request = self.context.get('request')
+                return request.build_absolute_uri(obj.thumbnail.url) if request else obj.thumbnail.url
+            except:
+                return None
+        return None
 
     def get_category_info(self, obj):
         if obj.category:
@@ -38,6 +42,7 @@ class ProjectSerializer(serializers.ModelSerializer):
                 "icon": obj.category.icon
             }
         return None
+
 
 # ---------------- Portfolio Category ----------------
 class PortfolioCategorySerializer(serializers.ModelSerializer):
@@ -50,6 +55,5 @@ class PortfolioCategorySerializer(serializers.ModelSerializer):
         ]
 
     def get_projects(self, obj):
-        # Only return active projects, ordered by 'order' and 'title'
         projects = obj.projects.filter(is_active=True).order_by('order', 'title')
-        return ProjectSerializer(projects, many=True).data
+        return ProjectSerializer(projects, many=True, context=self.context).data

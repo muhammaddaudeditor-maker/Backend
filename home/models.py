@@ -1,11 +1,11 @@
 from django.db import models
-from cloudinary.models import CloudinaryField
+
 
 
 # ---------------- Media Uploads ----------------
 class MediaFile(models.Model):
     title = models.CharField(max_length=255)
-    file = CloudinaryField('file', blank=True, null=True, resource_type='auto')  # ✅ handle any type (image/video/pdf)
+    file = models.FileField(upload_to='media_files/', blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -21,12 +21,7 @@ class HomeHero(models.Model):
     subtitle = models.TextField(help_text="Subtitle or description for the hero section")
 
     # ✅ Cloudinary video field
-    video = CloudinaryField(
-        'video',
-        blank=True,
-        null=True,
-        resource_type='video',  # ensures Cloudinary treats it as a video
-    )
+    video = models.FileField(upload_to='home_hero_videos/', blank=True, null=True)  # <-- changed
 
     primary_button_text = models.CharField(
         max_length=100, default="Watch Portfolio Reel", help_text="Text for the primary button"
@@ -80,13 +75,7 @@ class HomeIntro(models.Model):
     title = models.CharField(max_length=200, help_text="Main title for the intro section")
     subtitle = models.TextField(help_text="Subtitle or description for the intro section")
 
-    # ✅ Cloudinary image field
-    image = CloudinaryField(
-        'image',
-        blank=True,
-        null=True,
-        resource_type='image',  # ensures Cloudinary treats it as an image
-    )
+    image = models.ImageField(upload_to='home_intro_images/', blank=True, null=True)
 
     achievements = models.TextField(
         help_text="Comma-separated list of recent achievements (e.g., Vimeo Staff Pick Winner 2023, Wedding Wire Couples Choice Award)"

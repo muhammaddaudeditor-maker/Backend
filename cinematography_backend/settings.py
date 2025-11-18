@@ -4,38 +4,34 @@ Django settings for cinematography_backend project.
 
 import os
 from pathlib import Path
-import cloudinary
-from cloudinary import uploader, api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# -------------------------------------------------------------------
+# Security
+# -------------------------------------------------------------------
 SECRET_KEY = 'django-insecure-your-secret-key-here-change-this-later-12345'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
 ALLOWED_HOSTS = ['.vercel.app', '.now.sh', 'localhost', '127.0.0.1', '*']
 
 # -------------------------------------------------------------------
 # Application definition
 # -------------------------------------------------------------------
 INSTALLED_APPS = [
+    # Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # Third-party apps
+
+    # Third-party
     'rest_framework',
     'corsheaders',
-    'cloudinary_storage',
-    'cloudinary',
     'django_extensions',
     'django_filters',
-    
+
     # Local apps
     'services',
     'portfolio',
@@ -49,7 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serve static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,7 +60,7 @@ ROOT_URLCONF = 'cinematography_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
- 'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Add this line    
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # your template folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,7 +76,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'cinematography_backend.wsgi.application'
 
 # -------------------------------------------------------------------
-# Database (PostgreSQL on Neon) - HARDCODED
+# Database (PostgreSQL)
 # -------------------------------------------------------------------
 DATABASES = {
     'default': {
@@ -90,53 +86,37 @@ DATABASES = {
         'PASSWORD': 'npg_NvYTF4w9sUAm',
         'HOST': 'ep-muddy-flower-a1e5s9km-pooler.ap-southeast-1.aws.neon.tech',
         'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
+        'OPTIONS': {'sslmode': 'require'},
         'CONN_MAX_AGE': 0,
     }
 }
 
 # -------------------------------------------------------------------
-# Cloudinary Storage - HARDCODED
-# -------------------------------------------------------------------
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dp1gkt6tp',
-    'API_KEY': '542787591385464',
-    'API_SECRET': 'WgzVxby9l4PdZPiXc26u2AkZlLI',
-  
-}
-
-cloudinary.config( 
-    cloud_name='dp1gkt6tp',
-    api_key='542787591385464',
-    api_secret='WgzVxby9l4PdZPiXc26u2AkZlLI',
-    secure=True
-    
-)
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# -------------------------------------------------------------------
-# Static Files
-# -------------------------------------------------------------------
-# -------------------------------------------------------------------
-# -------------------------------------------------------------------
-# Static Files (Fixed for Vercel)
+# Static files
 # -------------------------------------------------------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Only include STATICFILES_DIRS if the 'static' folder actually exists
-# Otherwise comment it out or remove it
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Optional: include local static folder if exists
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-# Use WhiteNoise for static file serving
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# -------------------------------------------------------------------
+# Media files
+# -------------------------------------------------------------------
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Ensure media folder exists
+os.makedirs(MEDIA_ROOT, exist_ok=True)
+
+# Recommended folder structure for your apps:
+# Home images/videos → media/home/
+# About images/videos → media/about/
+# Portfolio thumbnails/videos → media/portfolio/
+# (You can add upload_to paths in your models if needed)
 
 # -------------------------------------------------------------------
-# Password Validation
+# Password validation
 # -------------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},

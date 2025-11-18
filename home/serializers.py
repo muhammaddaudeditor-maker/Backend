@@ -6,7 +6,6 @@ from .models import (
     HomeService, HomeProcess, HomeTool, HomeFAQ, HomeCTA
 )
 
-
 # ---------------- Home Hero ----------------
 class HomeHeroSerializer(serializers.ModelSerializer):
     video_url = serializers.SerializerMethodField()
@@ -22,12 +21,10 @@ class HomeHeroSerializer(serializers.ModelSerializer):
         ]
 
     def get_video_url(self, obj):
-        """Return Cloudinary video URL if available"""
-        try:
-            if obj.video:
-                return obj.video.url  # ✅ Cloudinary full URL
-        except:
-            return None
+        """Return server-hosted video URL if available"""
+        request = self.context.get('request')
+        if obj.video:
+            return request.build_absolute_uri(obj.video.url) if request else obj.video.url
         return None
 
     def get_typewriter_phrases(self, obj):
@@ -36,7 +33,6 @@ class HomeHeroSerializer(serializers.ModelSerializer):
 
 
 # ---------------- Home Stats ----------------
-# home/serializers.py
 class HomeStatSerializer(serializers.ModelSerializer):
     class Meta:
         model = HomeStat
@@ -65,12 +61,10 @@ class HomeIntroSerializer(serializers.ModelSerializer):
         ]
 
     def get_image_url(self, obj):
-        """Return Cloudinary image URL if available"""
-        try:
-            if obj.image:
-                return obj.image.url  # ✅ Cloudinary URL
-        except:
-            return None
+        """Return server-hosted image URL if available"""
+        request = self.context.get('request')
+        if obj.image:
+            return request.build_absolute_uri(obj.image.url) if request else obj.image.url
         return None
 
     def get_achievements(self, obj):

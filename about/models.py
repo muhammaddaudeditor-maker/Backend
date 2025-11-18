@@ -1,18 +1,23 @@
+# about/models.py
+
 from django.db import models
 from django.core.validators import FileExtensionValidator, MaxValueValidator, MinValueValidator
-from cloudinary.models import CloudinaryField
 
 # ---------------- Stats ----------------
 class Stat(models.Model):
     name = models.CharField(max_length=100, help_text="e.g., Projects, Happy Clients")
-    value = models.CharField(max_length=20, help_text="Value for the stat (e.g., '4M', '500+')")  # Changed to CharField
-    suffix = models.CharField(max_length=10, default="", help_text="Optional suffix for the stat (e.g., '+')")  # Made optional
-    icon = models.CharField(max_length=50, choices=[
-        ('Briefcase', 'Briefcase'),
-        ('Users', 'Users'),
-        ('Award', 'Award'),
-        ('Globe', 'Globe'),
-    ], default='Briefcase')
+    value = models.CharField(max_length=20, help_text="Value for the stat (e.g., '4M', '500+')")
+    suffix = models.CharField(max_length=10, default="", help_text="Optional suffix for the stat (e.g., '+')")
+    icon = models.CharField(
+        max_length=50,
+        choices=[
+            ('Briefcase', 'Briefcase'),
+            ('Users', 'Users'),
+            ('Award', 'Award'),
+            ('Globe', 'Globe'),
+        ],
+        default='Briefcase'
+    )
     order = models.PositiveIntegerField(default=0, help_text="Display order (lower numbers appear first)")
     is_active = models.BooleanField(default=True, help_text="Display this stat on the website")
 
@@ -23,14 +28,16 @@ class Stat(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.value}{self.suffix}"
-#######################################################
+
+
+# ---------------- Core Values ----------------
 class CoreValue(models.Model):
     title = models.CharField(max_length=100, help_text="e.g., Creative Precision")
     description = models.TextField(help_text="Description of the core value")
     icon = models.CharField(
         max_length=50,
         choices=[
-             ('Film', 'Film - Creative Precision'),
+            ('Film', 'Film - Creative Precision'),
             ('Users', 'Users - Clarity in Collaboration'),
             ('Heart', 'Heart - Calm Problem-Solving'),
             ('Lightbulb', 'Lightbulb - Growth-Driven Mindset'),
@@ -49,19 +56,22 @@ class CoreValue(models.Model):
         return self.title
 
 
-
-# ---------------- Timeline ----------------
+# ---------------- Timeline Events ----------------
 class TimelineEvent(models.Model):
     year = models.CharField(max_length=4, help_text="e.g., 2016")
     title = models.CharField(max_length=100, help_text="e.g., The Beginning")
     description = models.TextField(help_text="Description of the timeline event")
-    icon = models.CharField(max_length=50, choices=[
-        ('PlayCircle', 'PlayCircle'),
-        ('Award', 'Award'),
-        ('Briefcase', 'Briefcase'),
-        ('Globe', 'Globe'),
-        ('Sparkles', 'Sparkles'),
-    ], default='PlayCircle')
+    icon = models.CharField(
+        max_length=50,
+        choices=[
+            ('PlayCircle', 'PlayCircle'),
+            ('Award', 'Award'),
+            ('Briefcase', 'Briefcase'),
+            ('Globe', 'Globe'),
+            ('Sparkles', 'Sparkles'),
+        ],
+        default='PlayCircle'
+    )
     order = models.PositiveIntegerField(default=0, help_text="Display order (lower numbers appear first)")
     is_active = models.BooleanField(default=True, help_text="Display this event on the website")
 
@@ -81,14 +91,18 @@ class Skill(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         help_text="Skill level as a percentage (0-100)"
     )
-    icon = models.CharField(max_length=50, choices=[
-        ('Camera', 'Camera'),
-        ('Sparkles', 'Sparkles'),
-        ('Film', 'Film'),
-        ('Zap', 'Zap'),
-        ('Target', 'Target'),
-        ('Eye', 'Eye'),
-    ], default='Camera')
+    icon = models.CharField(
+        max_length=50,
+        choices=[
+            ('Camera', 'Camera'),
+            ('Sparkles', 'Sparkles'),
+            ('Film', 'Film'),
+            ('Zap', 'Zap'),
+            ('Target', 'Target'),
+            ('Eye', 'Eye'),
+        ],
+        default='Camera'
+    )
     order = models.PositiveIntegerField(default=0, help_text="Display order (lower numbers appear first)")
     is_active = models.BooleanField(default=True, help_text="Display this skill on the website")
 
@@ -133,10 +147,11 @@ class AboutTabContent(models.Model):
         help_text="Name of the tab (Story, Philosophy, or Process)"
     )
     title = models.CharField(max_length=100, help_text="e.g., My Journey")
-    content = models.TextField(help_text="Content for the tab, supports multiple paragraphs separated by newlines")
+    content = models.TextField(help_text="Content for the tab, supports multiple paragraphs")
 
-    image = CloudinaryField(
-        resource_type='image',
+    # Use server storage instead of Cloudinary
+    image = models.ImageField(
+        upload_to='about_tabs/',
         blank=True,
         null=True,
         help_text="Upload tab image"
@@ -157,8 +172,8 @@ class AboutTabContent(models.Model):
 # ---------------- Generic Media Upload ----------------
 class MediaFile(models.Model):
     title = models.CharField(max_length=255)
-    file = CloudinaryField(
-        resource_type='auto',
+    file = models.FileField(
+        upload_to='uploads/',
         blank=True,
         null=True,
         help_text="Upload any media file (image, video, etc.)"
