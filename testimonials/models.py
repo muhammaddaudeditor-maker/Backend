@@ -1,58 +1,32 @@
 # testimonials/models.py
-from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db import models   # ← THIS WAS MISSING!
+
 
 class Testimonial(models.Model):
-    name = models.CharField(max_length=100, help_text="Client's full name")
-    role = models.CharField(max_length=100, help_text="e.g. Startup Founder, Wedding Client")
-    company = models.CharField(max_length=150, help_text="Company or event name")
-    text = models.TextField(help_text="The testimonial quote")
-    
-    rating = models.PositiveSmallIntegerField(
+    name = models.CharField(max_length=100)
+    role = models.CharField(max_length=100, help_text='e.g., Wedding Couple, Real Estate Agent')
+    company = models.CharField(max_length=100, blank=True, null=True)
+    text = models.TextField(help_text='Testimonial content')
+    rating = models.IntegerField(
         default=5,
-        validators=[MinValueValidator(1), MaxValueValidator(5)],
-        help_text="Rating from 1 to 5 stars"
+        choices=[(i, i) for i in range(1, 6)],
+        help_text='Rating from 1 to 5 stars'
     )
-    
-    # Optional avatar image (you can upload real photos)
-    avatar_image = models.ImageField(
-        upload_to='testimonials/avatars/',
-        blank=True,
-        null=True,
-        help_text="Optional client photo (falls back to initials)"
-    )
-    
-    # Auto-generated initials (e.g. "JW")
-    avatar_initials = models.CharField(max_length=3, blank=True, editable=False)
-    
-    # Tailwind gradient class
+    avatar = models.CharField(max_length=10, blank=True, help_text="e.g. JD")
+    avatar_url = models.URLField(blank=True, null=True)
     gradient_color = models.CharField(
         max_length=100,
-        default="from-indigo-500 to-purple-500",
-        help_text="Tailwind gradient (e.g. from-indigo-500 to-purple-500)"
+        default="from-purple-500 to-pink-500",
+        help_text="Tailwind gradient classes, e.g. from-blue-500 to-cyan-500"
     )
-    
-    order = models.PositiveIntegerField(default=0, help_text="Display order (lower = first)")
-    is_active = models.BooleanField(default=True, help_text="Show on website?")
+    is_active = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['order', 'created_at']
-        verbose_name = "Testimonial"
-        verbose_name_plural = "Testimonials"
-
-    def save(self, *args, **kwargs):
-        # Auto-generate initials from name
-        if not self.avatar_initials:
-            parts = self.name.strip().split()
-            initials = ""
-            if len(parts) >= 2:
-                initials = (parts[0][0] + parts[-1][0]).upper()
-            elif parts:
-                initials = parts[0][:2].upper()
-            self.avatar_initials = initials or "??"
-        super().save(*args, **kwargs)
+        ordering = ['order', '-created_at']
+        verbose_name = 'Testimonial'
+        verbose_name_plural = 'Testimonials'
 
     def __str__(self):
-        return f"{self.name} ({self.company}) - {self.rating} stars"
+        return f"{self.name} - {self.rating} stars"
