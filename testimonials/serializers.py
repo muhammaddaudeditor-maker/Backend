@@ -5,6 +5,7 @@ from .models import Testimonial
 class TestimonialSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
     avatar_url = serializers.SerializerMethodField()
+    color = serializers.CharField(source='gradient_color', default='from-purple-500 to-pink-500')
 
     class Meta:
         model = Testimonial
@@ -12,7 +13,7 @@ class TestimonialSerializer(serializers.ModelSerializer):
             'id', 'name', 'role', 'company',
             'text', 'rating',
             'avatar', 'avatar_url',
-            'gradient_color', 'order', 'is_active'
+            'gradient_color', 'color', 'order', 'is_active'
         ]
 
     def get_avatar(self, obj):
