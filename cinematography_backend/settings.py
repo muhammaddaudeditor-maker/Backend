@@ -145,6 +145,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
+CORS_ALLOWED_ORIGINS = [
+    "https://your-frontend-domain.com",  # e.g., daudportfolio.vercel.app
+    "http://localhost:3000",  # For dev
+]
 # -------------------------------------------------------------------
 # REST Framework
 # -------------------------------------------------------------------
