@@ -9,7 +9,8 @@ class SiteConfigurationSerializer(serializers.ModelSerializer):
         fields = ['site_name', 'logo_url']
     
     def get_logo_url(self, obj):
-        """Return the Cloudinary URL for the logo"""
+        """Return full URL for ImageField"""
         if obj.logo:
-            return obj.logo.url
+            request = self.context.get('request')
+            return request.build_absolute_uri(obj.logo.url) if request else obj.logo.url
         return None

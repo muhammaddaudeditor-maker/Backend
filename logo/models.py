@@ -1,17 +1,16 @@
 from django.db import models
-from cloudinary.models import CloudinaryField
 
 class SiteConfiguration(models.Model):
     """
     Single instance model for site-wide configuration
     """
-    logo = CloudinaryField(
-        'logo',
-        folder='logo',
+    logo = models.ImageField(
+        upload_to='logo/',
         blank=True,
         null=True,
         help_text='Upload your site logo (recommended size: 200x60px)'
     )
+
     site_name = models.CharField(
         max_length=100,
         default='Alex Rodriguez',
