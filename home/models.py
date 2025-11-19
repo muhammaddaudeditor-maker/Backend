@@ -249,3 +249,43 @@ class HomeLogo(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Testimonial(models.Model):
+    name = models.CharField(max_length=100, help_text="Client's full name")
+    role = models.CharField(max_length=100, help_text="e.g., CEO, Bride, Marketing Director")
+    company = models.CharField(max_length=150, help_text="Company or event name")
+    text = models.TextField(help_text="The testimonial quote")
+    rating = models.PositiveIntegerField(
+        choices=[(i, i) for i in range(1, 6)],
+        default=5,
+        help_text="Star rating (1-5)"
+    )
+    avatar = models.CharField(
+        max_length=2,
+        blank=True,
+        help_text="Fallback initials (e.g., JD). Leave blank to use first letter of name."
+    )
+    avatar_image = models.ImageField(
+        upload_to='testimonials/avatars/',
+        blank=True,
+        null=True,
+        help_text="Optional profile photo"
+    )
+    gradient_color = models.CharField(
+        max_length=100,
+        default="from-purple-500 to-pink-500",
+        help_text="Tailwind gradient class (e.g., from-purple-600 to-blue-600)"
+    )
+    order = models.PositiveIntegerField(default=0, help_text="Display order (lower = first)")
+    is_active = models.BooleanField(default=True, help_text="Show on homepage")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['order', 'created_at']
+        verbose_name = "Testimonial"
+        verbose_name_plural = "Testimonials"
+
+    def __str__(self):
+        return f"{self.name} - {self.company}"

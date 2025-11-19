@@ -1,8 +1,8 @@
 # home/views.py
 
 from rest_framework import viewsets, filters
-from .models import HomeHero,HomeLogo, HomeStat, HomeIntro, HomeSkill, HomeService, HomeProcess, HomeTool, HomeFAQ, HomeCTA
-from .serializers import HomeHeroSerializer,HomeLogoSerializer, HomeStatSerializer, HomeIntroSerializer, HomeSkillSerializer, HomeServiceSerializer, HomeProcessSerializer, HomeToolSerializer, HomeFAQSerializer, HomeCTASerializer
+from .models import HomeHero,Testimonial,HomeLogo, HomeStat, HomeIntro, HomeSkill, HomeService, HomeProcess, HomeTool, HomeFAQ, HomeCTA
+from .serializers import HomeHeroSerializer,TestimonialSerializer,HomeLogoSerializer, HomeStatSerializer, HomeIntroSerializer, HomeSkillSerializer, HomeServiceSerializer, HomeProcessSerializer, HomeToolSerializer, HomeFAQSerializer, HomeCTASerializer
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -88,4 +88,11 @@ class HomeLogoViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = HomeLogoSerializer
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['order', 'title']
+    ordering = ['order']
+
+class TestimonialViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Testimonial.objects.filter(is_active=True)
+    serializer_class = TestimonialSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['order', 'created_at']
     ordering = ['order']

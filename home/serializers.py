@@ -3,7 +3,7 @@
 from rest_framework import serializers
 from .models import (
     HomeHero, HomeStat, HomeIntro, HomeSkill,HomeLogo,
-    HomeService, HomeProcess, HomeTool, HomeFAQ, HomeCTA
+    HomeService, HomeProcess, HomeTool, HomeFAQ, HomeCTA,Testimonial
 )
 
 # ---------------- Home Hero ----------------
@@ -106,7 +106,21 @@ class HomeFAQSerializer(serializers.ModelSerializer):
         model = HomeFAQ
         fields = ['id', 'question', 'answer', 'order', 'is_active']
 
+class TestimonialSerializer(serializers.ModelSerializer):
+    avatar_url = serializers.SerializerMethodField()
 
+    class Meta:
+        model = Testimonial
+        fields = [
+            'id', 'name', 'role', 'company', 'text', 'rating',
+            'avatar', 'avatar_url', 'gradient_color', 'order', 'is_active'
+        ]
+
+    def get_avatar_url(self, obj):
+        request = self.context.get('request')
+        if obj.avatar_image:
+            return request.build_absolute_uri(obj.avatar_image.url) if request else obj.avatar_image.url
+        return None   
 # ---------------- Home CTA ----------------
 class HomeCTASerializer(serializers.ModelSerializer):
     class Meta:

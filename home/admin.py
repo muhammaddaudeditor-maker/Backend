@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import HomeHero,HomeLogo, HomeStat, HomeIntro, HomeSkill, HomeService, HomeProcess, HomeTool, HomeFAQ, HomeCTA
+from .models import HomeHero,HomeLogo,Testimonial, HomeStat, HomeIntro, HomeSkill, HomeService, HomeProcess, HomeTool, HomeFAQ, HomeCTA
 
 @admin.register(HomeHero)
 class HomeHeroAdmin(admin.ModelAdmin):
@@ -191,3 +191,27 @@ class HomeLogoAdmin(admin.ModelAdmin):
             )
         return "No logo"
     logo_preview.short_description = 'Preview'
+
+@admin.register(Testimonial)
+class TestimonialAdmin(admin.ModelAdmin):
+    list_display = ['name', 'company', 'rating_stars', 'order', 'is_active', 'updated_at']
+    list_filter = ['is_active', 'rating', 'company']
+    search_fields = ['name', 'company', 'text']
+    list_editable = ['order', 'is_active']
+    readonly_fields = ['rating_stars']
+
+    fieldsets = (
+        ('Client Info', {
+            'fields': ('name', 'role', 'company', 'avatar', 'avatar_image')
+        }),
+        ('Testimonial', {
+            'fields': ('text', 'rating', 'gradient_color')
+        }),
+        ('Display', {
+            'fields': ('order', 'is_active')
+        }),
+    )
+
+    def rating_stars(self, obj):
+        return '★' * obj.rating + '☆' * (5 - obj.rating)
+    rating_stars.short_description = 'Rating'
