@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from .models import (
-    HomeHero, HomeStat, HomeIntro, HomeSkill,
+    HomeHero, HomeStat, HomeIntro, HomeSkill,HomeLogo,
     HomeService, HomeProcess, HomeTool, HomeFAQ, HomeCTA
 )
 
@@ -112,3 +112,17 @@ class HomeCTASerializer(serializers.ModelSerializer):
     class Meta:
         model = HomeCTA
         fields = ['id', 'title', 'description', 'button_text', 'is_active', 'created_at', 'updated_at']
+
+# ---------------- Home Logo ----------------
+class HomeLogoSerializer(serializers.ModelSerializer):
+    logo_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = HomeLogo
+        fields = ['id', 'title', 'logo', 'logo_url', 'website_url', 'order', 'is_active']
+
+    def get_logo_url(self, obj):
+        request = self.context.get('request')
+        if obj.logo:
+            return request.build_absolute_uri(obj.logo.url) if request else obj.logo.url
+        return None

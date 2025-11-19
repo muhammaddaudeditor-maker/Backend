@@ -2,7 +2,7 @@
 
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
-from .views import HomeHeroViewSet, HomeStatViewSet, HomeIntroViewSet, HomeSkillViewSet, HomeServiceViewSet, HomeProcessViewSet, HomeToolViewSet, HomeFAQViewSet, HomeCTAViewSet
+from .views import HomeHeroViewSet,HomeLogoViewSet, HomeStatViewSet, HomeIntroViewSet, HomeSkillViewSet, HomeServiceViewSet, HomeProcessViewSet, HomeToolViewSet, HomeFAQViewSet, HomeCTAViewSet
 from .views import UploadMediaView
 
 router = SimpleRouter()
@@ -15,6 +15,7 @@ router.register(r'processes', HomeProcessViewSet, basename='home_process')
 router.register(r'tools', HomeToolViewSet, basename='home_tool')
 router.register(r'faqs', HomeFAQViewSet, basename='home_faq')
 router.register(r'cta', HomeCTAViewSet, basename='home_cta')
+router.register(r'logos', HomeLogoViewSet, basename='home_logo')
 
 urlpatterns = [
     path('', include(router.urls)),

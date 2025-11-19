@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import HomeHero, HomeStat, HomeIntro, HomeSkill, HomeService, HomeProcess, HomeTool, HomeFAQ, HomeCTA
+from .models import HomeHero,HomeLogo, HomeStat, HomeIntro, HomeSkill, HomeService, HomeProcess, HomeTool, HomeFAQ, HomeCTA
 
 @admin.register(HomeHero)
 class HomeHeroAdmin(admin.ModelAdmin):
@@ -166,3 +166,28 @@ class HomeCTAAdmin(admin.ModelAdmin):
             'fields': ('is_active',)
         }),
     )
+
+@admin.register(HomeLogo)
+class HomeLogoAdmin(admin.ModelAdmin):
+    list_display = ['title', 'logo_preview', 'website_url', 'order', 'is_active', 'updated_at']
+    list_filter = ['is_active']
+    search_fields = ['title']
+    list_editable = ['order', 'is_active']
+
+    fieldsets = (
+        ('Logo Information', {
+            'fields': ('title', 'logo', 'website_url')
+        }),
+        ('Display Settings', {
+            'fields': ('order', 'is_active')
+        }),
+    )
+
+    def logo_preview(self, obj):
+        if obj.logo:
+            return format_html(
+                '<img src="{}" width="80" height="50" style="object-fit: contain; background:#fff; padding:5px; border-radius:8px;" />',
+                obj.logo.url
+            )
+        return "No logo"
+    logo_preview.short_description = 'Preview'

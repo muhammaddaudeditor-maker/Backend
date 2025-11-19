@@ -230,3 +230,22 @@ class HomeCTA(models.Model):
 
     def __str__(self):
         return self.title
+
+# ---------------- Logo Carousel Section ----------------
+class HomeLogo(models.Model):
+    title = models.CharField(max_length=100, help_text="Name of the brand/client (for admin reference)")
+    logo = models.ImageField(upload_to='home_logos/', help_text="Upload brand logo (preferably white/transparent PNG)")
+    website_url = models.URLField(blank=True, null=True, help_text="Optional link to client's website")
+    order = models.PositiveIntegerField(default=0, help_text="Display order (lower = appears first)")
+    is_active = models.BooleanField(default=True, help_text="Show this logo on homepage carousel")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['order', 'title']
+        verbose_name = "Home Logo"
+        verbose_name_plural = "Home Logos"
+
+    def __str__(self):
+        return self.title
