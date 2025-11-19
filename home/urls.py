@@ -17,6 +17,7 @@ router.register(r'faqs', HomeFAQViewSet, basename='home_faq')
 router.register(r'cta', HomeCTAViewSet, basename='home_cta')
 router.register(r'logos', HomeLogoViewSet, basename='home_logo')
 
+
 urlpatterns = [
     path('', include(router.urls)),
     path('upload/', UploadMediaView.as_view(), name='upload-media'),
